@@ -18588,6 +18588,7 @@ module.exports = /*#__PURE__*/function (_EventEmitter) {
               type: type,
               sdp: connection.localDescription.sdp
             };
+            debug('ready::SDP is ready');
             debug('emit "sdp"');
 
             _this13.emit('sdp', e);
@@ -18599,16 +18600,20 @@ module.exports = /*#__PURE__*/function (_EventEmitter) {
             var candidate = event.candidate;
 
             if (candidate) {
+              debug('ice candidate detected', candidate);
+
               _this13.emit('icecandidate', {
                 candidate: candidate,
                 ready: ready
               });
             } else if (!finished) {
+              debug('ice candidate null, sdp is ready');
               ready();
             }
           });
           connection.addEventListener('icegatheringstatechange', iceGatheringStateListener = function iceGatheringStateListener() {
             if (connection.iceGatheringState === 'complete' && !finished) {
+              debug('ice gathering state change, sdp is ready');
               ready();
             }
           });
