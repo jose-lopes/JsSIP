@@ -1684,7 +1684,10 @@ module.exports = /*#__PURE__*/function (_EventEmitter) {
         });
       }).then(function () {
         // Resolve right away if 'pc.iceGatheringState' is 'complete'.
+        debug('BEFORE check iceGatheringState:', connection.iceGatheringState, constraints.iceRestart, constraints);
+
         if (connection.iceGatheringState === 'complete' && !constraints.iceRestart) {
+          debug('iceGatheringState complete, resolve sdp right away');
           _this13._rtcReady = true;
           var e = {
             originator: 'local',
