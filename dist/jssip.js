@@ -18583,7 +18583,12 @@ module.exports = /*#__PURE__*/function (_EventEmitter) {
           var ready = function ready() {
             connection.removeEventListener('icecandidate', iceCandidateListener);
             connection.removeEventListener('icegatheringstatechange', iceGatheringStateListener);
-            if (iceGatheringTimer) clearTimeout(iceGatheringTimer);
+
+            if (iceGatheringTimer) {
+              debug('Clear iceGatheringTimer');
+              clearTimeout(iceGatheringTimer);
+            }
+
             finished = true;
             _this13._rtcReady = true;
             var e = {
