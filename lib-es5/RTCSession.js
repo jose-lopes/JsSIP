@@ -1706,10 +1706,13 @@ module.exports = /*#__PURE__*/function (_EventEmitter) {
           var finished = false;
           var iceCandidateListener;
           var iceGatheringStateListener;
+          var iceCheckingTimeout = 1000;
+          var iceGatheringTimer = null;
 
           var ready = function ready() {
             connection.removeEventListener('icecandidate', iceCandidateListener);
             connection.removeEventListener('icegatheringstatechange', iceGatheringStateListener);
+            if (iceGatheringTimer) clearTimeout(iceGatheringTimer);
             finished = true;
             _this13._rtcReady = true;
             var e = {
@@ -1725,6 +1728,10 @@ module.exports = /*#__PURE__*/function (_EventEmitter) {
             resolve(e.sdp);
           };
 
+          iceGatheringTimer = setTimeout(function () {
+            debug("IceChecking Timeout Triggered after ".concat(iceCheckingTimeout, " milliseconds"));
+            ready();
+          }, iceCheckingTimeout);
           connection.addEventListener('icecandidate', iceCandidateListener = function iceCandidateListener(event) {
             var candidate = event.candidate;
 
